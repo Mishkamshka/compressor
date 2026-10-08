@@ -68,11 +68,11 @@ function compressionSettings() {
 }
 
 const MODE_HINTS = {
-  'original|lossy': 'JPG and WebP at quality 75. PNG reduced to 256 colours.',
+  'original|lossy': 'JPG and WebP at quality 80. PNG reduced to 256 colours.',
   'original|lossless': 'PNG and WebP stay pixel perfect. JPG has no lossless mode, so it saves at quality 92 and keeps the original if that is no smaller.',
-  'webp|lossy': 'Quality 75. Usually the smallest file for photos.',
+  'webp|lossy': 'Quality 80. Usually the smallest file for photos.',
   'webp|lossless': 'Pixel perfect. Best for graphics and screenshots, large for photos.',
-  'jpg|lossy': 'Quality 75 with MozJPEG. Transparent areas become white.',
+  'jpg|lossy': 'Quality 80 with MozJPEG. Transparent areas become white.',
   'jpg|lossless': 'JPG has no lossless mode, so this saves at quality 92. Transparent areas become white.',
   'png|lossy': 'Reduced to 256 colours. Great for graphics, can band on photos.',
   'png|lossless': 'Pixel perfect, with the file structure optimised.',

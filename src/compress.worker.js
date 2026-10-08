@@ -14,8 +14,8 @@ import quantWasmUrl from 'libimagequant-wasm/wasm/libimagequant_wasm_bg.wasm?url
 
 // One place to tune how hard each format is squeezed.
 const TUNING = {
-  jpg: { lossy: 75, lossless: 92 },
-  webp: { lossy: 75, method: 4 },
+  jpg: { lossy: 80, lossless: 92 },
+  webp: { lossy: 80, method: 6, losslessMethod: 4 },
   png: { level: 2, maxColours: 256, minQuality: 40, targetQuality: 90 },
 };
 
@@ -151,7 +151,7 @@ async function encode(image, format, mode) {
   if (format === 'webp') {
     return mode === 'lossy'
       ? encodeWebp(image, { quality: TUNING.webp.lossy, method: TUNING.webp.method })
-      : encodeWebp(image, { lossless: 1, quality: 75, method: TUNING.webp.method });
+      : encodeWebp(image, { lossless: 1, quality: 75, method: TUNING.webp.losslessMethod });
   }
 
   // PNG
