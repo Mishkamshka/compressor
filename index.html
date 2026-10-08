@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Compress</title>
+    <meta name="description" content="Bulk image compression to WebP, PNG and JPG, done entirely in the browser." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="settings" aria-label="Settings">
+        <h1 class="wordmark">Compress</h1>
+
+        <form id="settings" autocomplete="off">
+          <fieldset class="field">
+            <legend>Format</legend>
+            <div class="segmented four">
+              <label><input type="radio" name="format" value="original" /><span>Original</span></label>
+              <label><input type="radio" name="format" value="webp" /><span>WebP</span></label>
+              <label><input type="radio" name="format" value="jpg" /><span>JPG</span></label>
+              <label><input type="radio" name="format" value="png" /><span>PNG</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Compression</legend>
+            <div class="segmented two">
+              <label><input type="radio" name="mode" value="lossy" /><span>Lossy</span></label>
+              <label><input type="radio" name="mode" value="lossless" /><span>Lossless</span></label>
+            </div>
+            <p class="hint" id="mode-hint"></p>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Resize</legend>
+            <label class="number">
+              <span id="max-label">Max width</span>
+              <input type="number" name="maxWidth" min="1" step="1" inputmode="numeric" placeholder="Off" />
+              <span class="unit">px</span>
+            </label>
+            <label class="check"><input type="checkbox" name="longEdge" /><span>Measure the long edge instead</span></label>
+            <p class="hint">Images already smaller are left at their size.</p>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Rename</legend>
+            <div class="pair">
+              <label class="text"><span>Prefix</span><input type="text" name="prefix" spellcheck="false" /></label>
+              <label class="text"><span>Suffix</span><input type="text" name="suffix" spellcheck="false" placeholder="-min" /></label>
+            </div>
+            <label class="check"><input type="checkbox" name="lowercase" /><span>Lowercase</span></label>
+            <label class="check"><input type="checkbox" name="hyphens" /><span>Hyphens instead of spaces</span></label>
+            <p class="rename-preview" id="rename-preview" aria-live="polite"></p>
+          </fieldset>
+        </form>
+
+        <p class="privacy">Runs entirely in this browser. Nothing is uploaded.</p>
+      </aside>
+
+      <main class="workspace" id="workspace">
+        <section class="drop" id="drop" data-empty>
+          <div class="drop-inner">
+            <p class="drop-title">Drop images or a folder</p>
+            <p class="drop-sub">JPG, PNG, WebP, AVIF and GIF. HEIC works in Safari.</p>
+            <div class="drop-actions">
+              <button type="button" class="button primary" id="pick-files">Choose files</button>
+              <button type="button" class="button" id="pick-folder">Choose folder</button>
+            </div>
+          </div>
+          <input type="file" id="file-input" accept="image/*,.heic,.heif,.avif" multiple hidden />
+          <input type="file" id="folder-input" webkitdirectory multiple hidden />
+        </section>
+
+        <div class="stale" id="stale" hidden>
+          <p>Some images were compressed with different settings.</p>
+          <button type="button" class="button" id="recompress">Recompress with current settings</button>
+        </div>
+
+        <ul class="files" id="files" aria-label="Images"></ul>
+
+        <footer class="totals" id="totals" hidden>
+          <div class="totals-figures">
+            <p id="totals-count"></p>
+            <p id="totals-size"></p>
+          </div>
+          <div class="totals-actions">
+            <button type="button" class="button quiet" id="clear">Clear</button>
+            <button type="button" class="button primary" id="download-all" disabled>Download all</button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <div class="dropping" id="dropping" hidden><p>Drop to compress</p></div>
+
+    <dialog class="compare" id="compare" aria-labelledby="compare-title">
+      <header class="compare-head">
+        <div>
+          <h2 id="compare-title"></h2>
+          <p id="compare-sizes"></p>
+        </div>
+        <div class="compare-tools">
+          <div class="segmented two small" role="group" aria-label="Zoom">
+            <label><input type="radio" name="zoom" value="fit" checked /><span>Fit</span></label>
+            <label><input type="radio" name="zoom" value="actual" /><span>100%</span></label>
+          </div>
+          <button type="button" class="button" id="compare-close">Close</button>
+        </div>
+      </header>
+      <div class="compare-stage" id="compare-stage">
+        <div class="compare-frame" id="compare-frame">
+          <img id="compare-before" alt="Original" />
+          <img id="compare-after" alt="Compressed" />
+          <div class="compare-divider" id="compare-divider" aria-hidden="true"></div>
+          <p class="compare-label before">Original</p>
+          <p class="compare-label after">Compressed</p>
+          <p class="compare-missing" id="compare-missing" hidden>This browser can't preview the original format.</p>
+        </div>
+      </div>
+      <label class="compare-slider">
+        <span class="visually-hidden">Comparison position</span>
+        <input type="range" id="compare-range" min="0" max="100" step="0.1" value="50" />
+      </label>
+    </dialog>
+  </body>
+</html>
