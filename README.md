@@ -21,8 +21,8 @@ The encoders are the same ones Google's Squoosh uses, compiled to WebAssembly vi
 
 | Output | Lossy | Lossless |
 | --- | --- | --- |
-| WebP | libwebp, quality 75 | libwebp lossless |
-| JPG | MozJPEG, quality 75 | MozJPEG, quality 92 (JPG has no true lossless mode) |
+| WebP | libwebp, quality 80 | libwebp lossless |
+| JPG | MozJPEG, quality 80 | MozJPEG, quality 92 (JPG has no true lossless mode) |
 | PNG | libimagequant to 256 colours, then OxiPNG | OxiPNG |
 
 Resizing uses Lanczos3 in linear light. All the numbers live in one `TUNING` object at the top of `src/compress.worker.js` if you want to adjust them. Images are processed in parallel across a small pool of Web Workers.
@@ -69,3 +69,4 @@ src/style.css              styles, light and dark
 - [libimagequant](https://github.com/ImageOptim/libimagequant) via libimagequant-wasm: libimagequant itself is GPL v3 or later, so if you add a licence to this repo, GPL v3 is the compatible choice
 - [fflate](https://github.com/101arrowz/fflate) for zipping: MIT
 - [Schibsted Grotesk](https://github.com/schibsted/schibsted-grotesk) typeface: SIL Open Font Licence
+# compressor
